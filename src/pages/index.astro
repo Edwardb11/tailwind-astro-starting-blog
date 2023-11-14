@@ -7,17 +7,10 @@ import Link from "@/components/Link.astro";
 import FormattedDate from "@/components/FormattedDate.astro";
 import Tag from "@/components/Tag.astro";
 import { excludeDrafts, sortBlogPosts } from "@/functions";
-const posts = await getCollection("blog", excludeDrafts).then(sortBlogPosts);
-import { app } from "../firebase/config";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import {firebaseData} from '../firebase/db';
 
-const db = getFirestore(app);
-const pruebasCollection = collection(db, "pruebas");
-const querySnapshot = await getDocs(pruebasCollection);
-const firebaseData = [];
-querySnapshot.forEach((doc) => {
-  firebaseData.push({ id: doc.id, ...doc.data() });
-});
+const posts = await getCollection("blog", excludeDrafts).then(sortBlogPosts);
+
 ---
 
 <RootLayout title={SITE_METADATA.title} description={SITE_METADATA.description}>
@@ -74,7 +67,7 @@ querySnapshot.forEach((doc) => {
                         </h2>
                         <div class="flex flex-wrap">
                           {tags.map(({ slug }) => (
-                            <Tag slug={slug} />
+                            <Tag slug={slug} /> 
                           ))}
                         </div>
                       </div>
